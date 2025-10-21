@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 // Colors for charts
 const COLORS = ['#2563EB', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
 
-export const AnalyticsScreen = () => {
+const AnalyticsScreen = () => {
   const { data: todos = [], isLoading } = useTodos();
 
   const stats = useMemo(() => {
@@ -21,9 +21,9 @@ export const AnalyticsScreen = () => {
       value: todos.filter(t => t.priority === p).length,
     }));
 
-    const byCategory = [...new Set(todos.map(t => t.category || 'Uncategorized'))].map(cat => ({
+    const byCategory = [...new Set(todos.flatMap(t => Array.isArray(t.category) ? t.category : [t.category || 'Uncategorized']))].map(cat => ({
       name: cat,
-      value: todos.filter(t => t.category === cat).length,
+      value: todos.filter(t => Array.isArray(t.category) ? t.category.includes(cat) : t.category === cat).length,
     }));
 
     return { total, completed, pending, byPriority, byCategory };
@@ -108,3 +108,5 @@ export const AnalyticsScreen = () => {
     </div>
   );
 };
+
+export default AnalyticsScreen;

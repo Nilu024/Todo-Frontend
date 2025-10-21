@@ -29,7 +29,7 @@ const TasksScreen = () => {
     const matchesSearch = searchQuery === '' ||
       todo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       todo.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      todo.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (Array.isArray(todo.category) ? todo.category.some(cat => cat.toLowerCase().includes(searchQuery.toLowerCase())) : (todo.category || '').toLowerCase().includes(searchQuery.toLowerCase())) ||
       (todo.tags && todo.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())));
 
     if (!matchesSearch) return false;
