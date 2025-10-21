@@ -1,15 +1,15 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useApp, AppProvider } from "@/context/AppContext";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { FAB } from "@/components/FAB";
 import { TodoModal } from "@/components/TodoModal";
 
-import HomeScreen from "@/screens/HomeScreen";
-import TasksScreen from "./screens/TasksScreen";
-import CalendarScreen from "./screens/CalendarScreen";
-import { AnalyticsScreen } from "@/screens/AnalyticsScreen";
-import SettingsScreen from './screens/SettingsScreen';
+const HomeScreen = lazy(() => import("@/screens/HomeScreen"));
+const TasksScreen = lazy(() => import("./screens/TasksScreen"));
+const CalendarScreen = lazy(() => import("./screens/CalendarScreen"));
+const AnalyticsScreen = lazy(() => import("@/screens/AnalyticsScreen"));
+const SettingsScreen = lazy(() => import('./screens/SettingsScreen'));
 
 export const AppContent = () => {
   const { currentScreen, setCurrentScreen, showAddModal, setShowAddModal } =
@@ -52,7 +52,9 @@ export const AppContent = () => {
       />
 
       <main className="max-w-2xl mx-auto">
-        <CurrentScreenComponent />
+        <Suspense fallback={<div>Loading...</div>}>
+          <CurrentScreenComponent />
+        </Suspense>
       </main>
 
       <BottomNav
